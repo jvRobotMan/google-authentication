@@ -57,6 +57,32 @@ This class handles generating a JSON Web Token (JWT) for Google Service Account 
 * This is a basic example and might require error handling and exception management for real-world applications.
 * Ensure proper security measures are taken when storing and using the private key.
 
+**Usage in Dataweave 2.0**
+```
+%dw 2.0
+output application/json
+---
+// Replace with your actual values
+var filePath = "/path/to/your/file.txt";
+var serviceAccountEmail = "your-service-account@project-id.iam.gserviceaccount.com";
+var privateKey = // Replace with properly formatted private key content
+
+// Call the generateJWT function from oauth.java
+var accessToken = oauth.generateJWT(privateKey, serviceAccountEmail);
+
+// Optional: Specify the folder ID for upload
+var folderId = "your_folder_id"; // Replace with actual folder ID
+
+// Call the uploadMultiPartFile function from gsuiteActions.java
+var uploadResult = gsuiteActions.uploadMultiPartFile(filePath, accessToken, folderId);
+
+// Check the upload result
+if (uploadResult.startsWith("200")) {
+  write("File uploaded successfully!");
+} else {
+  write("Upload failed: " ++ uploadResult);
+}
+```
 # Maven dependencies
 ```
 <dependency>
